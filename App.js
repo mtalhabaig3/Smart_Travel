@@ -1,20 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import Travel from "./navigation/Travel";
+import Welcome from "./screens/Welcome";
+import Profile from "./screens/Profile";
+import { LogBox } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+LogBox.ignoreLogs([
+  'Warning: AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from "@react-native-async-storage/async-storage" instead of "react-native". See https://github.com/react-native-async-storage/async-storage',
+]);
+LogBox.ignoreAllLogs();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+  return <Travel />;
+};
+
+export default App;
