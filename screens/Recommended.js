@@ -11,6 +11,7 @@ import {
   Image,
   Alert,
 } from "react-native";
+import { AsyncStorage } from "react-native";
 import BackButton from "../components/BackButton";
 import { mocks, mocks2 } from "../core/mocks";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -20,7 +21,6 @@ const { width, height } = Dimensions.get("window");
 
 const Recommended = ({ navigation, recommendedDestinations, route }) => {
   const [clicked, setClicked] = useState(false);
-  const [markedhere, setMarkedHere] = useState(0);
 
   async function fetchWeatherData(item) {
     const API = `https://api.openweathermap.org/data/2.5/weather?q=${item.title}&units=metric&appid=${API_KEY}`;
@@ -39,13 +39,11 @@ const Recommended = ({ navigation, recommendedDestinations, route }) => {
       console.log(error);
     }
   }
-  function onClicked(item) {
+  async function onClicked(item) {
     item.saved = !item.saved;
     if (item.saved === true) {
-      setMarkedHere(markedhere + 1);
       Alert.alert(`Added "${item.title}" to Bookmarks.`);
     } else {
-      setMarkedHere(markedhere - 1);
       Alert.alert(`Removed "${item.title}" from Bookmarks.`);
     }
     setClicked(!clicked);

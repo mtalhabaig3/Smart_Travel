@@ -22,6 +22,7 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import BookmarkIcon from "../components/BookmarkIcon";
 import * as theme from "../theme";
 import { mocks, mocks2 } from "../core/mocks";
+import { AsyncStorage } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -150,29 +151,30 @@ const Articles = ({
   route,
 }) => {
   const scrollX = new Animated.Value(0);
-
-  const [clicked, setClicked] = useState(false);
-  const [marked, setMarked] = useState(0);
   const isFocused = useIsFocused();
+
+  const [count, setCount] = useState(0);
 
   function onClicked(item) {
     item.saved = !item.saved;
-    // if (route.params.markedhere) {
-    //   setMarked(marked + markedhere);
-    // }
+
+    const data = recommendedDestinations.filter(function (item) {
+      return item.saved === true;
+    });
+    setCount(data.length);
+
     if (item.saved === true) {
-      setMarked(marked + 1);
       Alert.alert(`Added "${item.title}" to Bookmarks.`);
     } else {
-      setMarked(marked - 1);
       Alert.alert(`Removed "${item.title}" from Bookmarks.`);
     }
-
-    setClicked(!clicked);
   }
 
   useEffect(() => {
-    setClicked(!clicked);
+    const data = recommendedDestinations.filter(function (item) {
+      return item.saved === true;
+    });
+    setCount(data.length);
   }, [isFocused]);
 
   // function setting(item) {
@@ -469,7 +471,7 @@ const Articles = ({
 
           {renderRecommended()}
           <BookmarkIcon />
-          {marked != 0 && (
+          {count != 0 && (
             <View
               style={{
                 position: "absolute",
@@ -483,7 +485,7 @@ const Articles = ({
                 justifyContent: "center",
               }}
             >
-              <Text style={{ color: "white" }}>{marked}</Text>
+              <Text style={{ color: "white" }}>{count}</Text>
             </View>
           )}
         </ScrollView>
